@@ -1,11 +1,6 @@
 plugins {
-  id("java")
-  id("java-library")
-  kotlin("jvm") version "1.5.31"
-}
-
-repositories {
-  mavenCentral()
+  id("qai.java-conventions")
+  application
 }
 
 dependencies {
@@ -27,17 +22,13 @@ dependencies {
   testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.2")
 }
 
-tasks.withType<Test> {
-  useJUnitPlatform()
+tasks.named("jar", Jar::class.java) {
+  manifest {
+    attributes["Implementation-Title"] = "Project A"
+  }
 }
 
-tasks.jar {
-  duplicatesStrategy = DuplicatesStrategy.INCLUDE
-  archiveFileName.set("${project.name}-${project.version}.jar")
-  manifest {
-    attributes["Implementation-Title"] = "Project B"
-    attributes["Implementation-Version"] = project.version
-    attributes["Main-Class"] = "com.example.StartProjectKt"
-  }
-  configurations["runtimeClasspath"].forEach { file -> from(project.zipTree(file.absoluteFile)) }
+application {
+  // need to add Kt as Kotlin generates all files in Java with that at the end.
+  mainClass.set("com.example.projectb.StartProjectKt")
 }

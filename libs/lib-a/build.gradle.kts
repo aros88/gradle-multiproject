@@ -1,11 +1,5 @@
 plugins {
-  id("java")
-  id("java-library")
-  kotlin("jvm") version "1.5.31"
-}
-
-repositories {
-  mavenCentral()
+  id("qai.java-conventions")
 }
 
 dependencies {
@@ -21,15 +15,8 @@ dependencies {
   testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.2")
 }
 
-tasks.withType<Test> {
-  useJUnitPlatform()
-}
-
-val jar: Jar by tasks
-jar.apply {
-  archiveFileName.set("${project.name}-${project.version}.jar")
+tasks.named("jar", Jar::class.java) {
   manifest {
     attributes["Implementation-Title"] = "Lib A"
-    attributes["Implementation-Version"] = project.version
   }
 }
